@@ -698,7 +698,11 @@ module RSpec
     #       matchers (due to how the custom matcher DSL was evaluated in 2.x,
     #       `match` could not be used there), but is no longer needed in 3.x.
     def match(expected)
-      BuiltIn::Match.new(expected)
+      if ::String === expected
+        BuiltIn::Captures.new(expected)
+      else
+        BuiltIn::Match.new(expected)
+      end
     end
     alias_matcher :match_regex,        :match
     alias_matcher :an_object_matching, :match
